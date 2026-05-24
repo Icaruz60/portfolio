@@ -61,6 +61,9 @@ const CONFIG = {
         "Next.js",
         "TypeScript",
         "Mantine UI",
+        "Tailwind",
+        "Three.js",
+        "Framer Motion",
         "HTML",
         "CSS",
         "JavaScript",
@@ -69,13 +72,18 @@ const CONFIG = {
     {
       title: "Backend",
       items: [
-        "C#",
         ".NET",
+        "C#",
+        "Java",
+        "C",
+        "C++",
+        "Fortran",
         "Node.js",
         "Express.js",
-        "Postgres",
+        "PostgreSQL",
         "MongoDB",
         "MySQL",
+        "SQL",
         "Fast API",
       ],
     },
@@ -87,18 +95,36 @@ const CONFIG = {
       title: "Game / 3D",
       items: ["Unity", "C#", "Blender", "VR"],
     },
-    { title: "AI / Data", items: ["Python", "LSTM", "Claude", "Codex"] },
+    {
+      title: "AI / Data",
+      items: [
+        "Python",
+        "PyTorch",
+        "XGBoost",
+        "SHAP",
+        "LSTM",
+        "Pandas",
+        "OpenAI",
+        "Claude",
+        "Codex",
+      ],
+    },
     {
       title: "Tooling",
       items: [
-        "Azure",
-        "Git",
         "Docker",
+        "Git",
+        "Azure",
+        "Azure Functions",
         "GitHub",
+        "GitHub Actions",
         "Fork",
         "npm",
         "Supabase",
+        "Figma",
         "Linux",
+        "REST APIs",
+        "CI/CD",
         "Plesk",
         "Hosting",
       ],
@@ -106,15 +132,27 @@ const CONFIG = {
   ],
   experience: [
     {
-      company: "Tobit",
-      role: "Full-Stack Developer Intern",
-      period: "2023",
-      location: "Ahaus, DE",
+      company: "Envoc",
+      role: "Full Stack Software Developer Intern",
+      period: "2026",
+      location: "Baton Rouge, US",
       summary:
-        "I was able to gain an insight into this amazing Company and learn many things about Software Engineering and the Industry itself.",
+        "6-month internship with intensive and complex backend and frontend work",
       highlights: [
-        "Made an intro Website and built a News Website 3 times using 3 different technologies",
-        "HTML, CSS, JS, React, C#",
+        "Single-handedly built a standalone microservice that takes in a unified payload and builds digital wallet passes for Apple, Google, and Samsung Wallet. Designed and engineered the solution, translation process, and generalized payload structure",
+        "As part of a team, created the backend and frontend for a pass/credential creation and distribution service",
+        "Azure, .NET, React, C#, Domain-Driven Design, CQRS Pattern, Collaborative Programming, Following Business Standards",
+      ],
+    },
+    {
+      company: "PlayXScape",
+      role: "Lead Game Developer Intern",
+      period: "2025",
+      location: "US",
+      summary: "Developed 3 Mobile Games for a Startup called PlayXScape",
+      highlights: [
+        "Built out 3 different 2D Unity Mobile Games with focus on Performance and platform-friendliness",
+        "Unity, Unity2D, C#, Blender, Aseprite, Audacity",
       ],
     },
     {
@@ -130,27 +168,15 @@ const CONFIG = {
       ],
     },
     {
-      company: "PlayXScape",
-      role: "Lead Game Developer Intern",
-      period: "2025",
-      location: "US",
-      summary: "Developed 3 Mobile Games for a Startup called PlayXScape",
-      highlights: [
-        "Built out 3 different 2D Unity Mobile Games with focus on Performance and platform-friendliness",
-        "Unity, Unity2D, C#, Blender, Aseprite, Audacity",
-      ],
-    },
-    {
-      company: "Envoc",
-      role: "Full Stack Software Developer Intern",
-      period: "2026",
-      location: "Baton Rouge, US",
+      company: "Tobit",
+      role: "Full-Stack Developer Intern",
+      period: "2023",
+      location: "Ahaus, DE",
       summary:
-        "6-month internship with intensive and complex backend and frontend work",
+        "I was able to gain an insight into this amazing Company and learn many things about Software Engineering and the Industry itself.",
       highlights: [
-        "Single-handedly built a standalone microservice that takes in a unified payload and builds digital wallet passes for Apple, Google, and Samsung Wallet. Designed and engineered the solution, translation process, and generalized payload structure",
-        "As part of a team, created the backend and frontend for a pass/credential creation and distribution service",
-        "Azure, .NET, React, C#, Domain-Driven Design, CQRS Pattern, Collaborative Programming, Following Business Standards",
+        "Made an intro Website and built a News Website 3 times using 3 different technologies",
+        "HTML, CSS, JS, React, C#",
       ],
     },
   ],
@@ -194,17 +220,49 @@ const CONFIG = {
     {
       title: "Ascend — Social Media for Productivity",
       description:
-        "Ascend is a Phone App, that aims to fight against the current trend of doomscrolling Social Medias. It aims to reward productivity and strengthen the bond between you and your friends with sharing meaningful things and progressing life together rather than sending cat videos forth and back.",
-      tags: ["React Native", "Expo", "Supabase", "TypeScript"],
+        "Ascend is a phone app fighting the doomscrolling epidemic. Instead of mindless scrolling, it rewards productivity and strengthens real friendships. You can share meaningful progress, level up together, and actually do something with your time.",
+      tags: ["React Native", "Expo", "Supabase", "TypeScript", "OpenAI"],
       image: undefined,
       previewType: "phone",
       previewVideo: "/ascendpreview.mp4",
       href: "https://ascendapp.eu",
     },
     {
+      title: "IMASS Cloud — Legacy Science, Modernized",
+      description:
+        "Led a 5-person team building a cloud platform that containerizes legacy Fortran science models and makes them accessible via a modern web UI so that no manual environment setup is needed for researchers anymore. Built a visual Workflow Builder letting scientists chain model inputs and outputs without writing a single line of code. Contributed to securing $1.2M in federal funding for ARA from the US Congress.",
+      tags: ["React", ".NET", "C#", "Docker", "Fortran", "Azure"],
+      image: undefined,
+      previewType: "web",
+      previewVideo: "/imasspreview.mp4",
+      href: "https://imass.gerritvisser.de",
+    },
+    {
+      title:
+        "Wallet Pass Generator — Industry used Pass Generation Microservice",
+      description:
+        "Engineered a standalone microservice that abstracts the fundamentally different formats of Apple Wallet, Google Wallet, and Samsung Wallet into a single unified input. Handles complete pass generation and cryptographic signing for all three platforms via Azure Functions. Went as sole engineer from architecture and design to containerized deployment on Microsoft Azure.",
+      tags: [".NET", "C#", "Azure Functions", "Docker"],
+      image: undefined,
+      previewType: "web",
+      previewVideo: "/walletpasspreview.mp4",
+      href: undefined,
+    },
+    {
+      title: "Wolf of AI Street — EUR/USD LSTM Trading Bot",
+      description:
+        "Built a custom dataset from 5 years of hourly EUR/USD OHLC data fused with GDELT news sentiment data. Includes a custom relevance scoring system for article weighting across 33,000+ aligned time-series points. Trained an LSTM through three iterative architectures: directional prediction, confidence-driven forecasting, and a full trading bot. Improved each generation based on the previous model's results.",
+      tags: ["Python", "PyTorch", "LSTM", "GDELT", "Pandas"],
+      image:
+        "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80",
+      previewType: "web",
+      previewVideo: undefined,
+      href: undefined,
+    },
+    {
       title: "TempoChores — Timed Cleaning",
       description:
-        "Chores are quite a chore. they are time consuming. they are monotone. This App wants to improve all that. Many people overestimate how long a chore takes, thus timing it is actually supposed to help. with TempoChores you can do just that and much more! You can tell the app how much time you have and what chores are due and it will automatically figure out the best possible chore schedule for you. Planned for the future are also a leaderboard and levels to compare yourself with your friends. Who do you think has the cleanest house?",
+        "Chores are a chore. They're time-consuming, monotone, and easy to put off. TempoChores fixes that: Tell it how much time you have and which chores are due, and it builds the optimal schedule for you automatically. Timing your tasks makes them feel shorter. Leaderboards and levels coming soon.",
       tags: ["Flutter", "Dart", "Hive"],
       image: undefined,
       previewVideo: "/tempochorespreview.mp4",
@@ -214,7 +272,7 @@ const CONFIG = {
     {
       title: "MenuMate — Interactive Restaurant Menus",
       description:
-        "A Website that aims to better the Dining Experience. No more staring at a wall of text to choose your next meal! use smart filters and an improved rating system to find the best fit for you! ",
+        "A web app that modernizes the dining experience. Smart filters and an improved rating system replace walls of text, so you actually find what you want to eat.",
       tags: ["React", "C#", "Mantine.UI", "MariaDB", "Plesk"],
       image: undefined,
       previewVideo: "/MenuMatepreview.mp4",
@@ -268,7 +326,7 @@ const EDUCATION_TAGS = CONFIG.education.hops.map((hop, idx) => {
 const lonLatToCartesian = (
   lon: number,
   lat: number,
-  radius: number
+  radius: number,
 ): [number, number, number] => {
   const phi = (90 - lat) * (Math.PI / 180);
   const theta = (lon + 180) * (Math.PI / 180);
@@ -614,7 +672,7 @@ const DestinationsPanel: React.FC = () => {
     row: { left: string; mid: string; right: string },
     extraClasses?: string,
     key?: React.Key,
-    delay = 0
+    delay = 0,
   ) => (
     <motion.div
       key={key}
@@ -644,7 +702,7 @@ const DestinationsPanel: React.FC = () => {
         </p>
         <div className="mt-3 space-y-3">
           {pastDestinations.map((row, idx) =>
-            renderRow(row, "border-white/10", `${row.left}-${idx}`, idx * 0.05)
+            renderRow(row, "border-white/10", `${row.left}-${idx}`, idx * 0.05),
           )}
         </div>
       </div>
@@ -658,7 +716,7 @@ const DestinationsPanel: React.FC = () => {
               currentDestination,
               "border-[#58FF8A]/40 bg-[#0f1b11] shadow-[0_10px_30px_rgba(0,0,0,0.3)]",
               "current-destination",
-              0.12
+              0.12,
             )}
           </div>
         </div>
@@ -672,7 +730,7 @@ const DestinationsPanel: React.FC = () => {
             futureDestination,
             "border-white/10 text-white/70",
             "future-destination",
-            0.2
+            0.2,
           )}
         </div>
       </div>
@@ -791,11 +849,14 @@ const ProjectCard: React.FC<{
   );
 
   const renderWebPreview = () => (
-    <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[32px] border border-white/10 bg-[#0b0b0b]">
-      <div className="absolute inset-0 transition duration-500 group-hover:scale-105">
-        {renderMedia()}
+    <div className="relative w-full">
+      <div className="pointer-events-none absolute -inset-4 rounded-[40px] bg-[#58FF8A]/30 opacity-0 blur-3xl transition duration-500 group-hover:opacity-70" />
+      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[32px] border border-white/10 bg-[#0b0b0b]">
+        <div className="absolute inset-0 transition duration-500 group-hover:scale-105">
+          {renderMedia()}
+        </div>
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/35" />
       </div>
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/35" />
     </div>
   );
 
@@ -811,15 +872,25 @@ const ProjectCard: React.FC<{
           invert ? "md:flex-row-reverse" : ""
         }`}
       >
-        <a
-          href={project.href || project.liveUrl || "#"}
-          target="_blank"
-          className={`group w-full md:w-1/2 ${
-            isPhonePreview ? "flex justify-center" : ""
-          }`}
-        >
-          {isPhonePreview ? renderPhonePreview() : renderWebPreview()}
-        </a>
+        {project.href || project.liveUrl ? (
+          <a
+            href={project.href || project.liveUrl}
+            target="_blank"
+            className={`group w-full md:w-1/2 ${
+              isPhonePreview ? "flex justify-center" : ""
+            }`}
+          >
+            {isPhonePreview ? renderPhonePreview() : renderWebPreview()}
+          </a>
+        ) : (
+          <div
+            className={`group w-full md:w-1/2 ${
+              isPhonePreview ? "flex justify-center" : ""
+            }`}
+          >
+            {isPhonePreview ? renderPhonePreview() : renderWebPreview()}
+          </div>
+        )}
         <div className="w-full space-y-4 md:w-1/2">
           <h3 className="text-2xl font-bold text-white">{project.title}</h3>
           <p className="max-w-prose text-white/70">{project.description}</p>
@@ -833,13 +904,15 @@ const ProjectCard: React.FC<{
               </span>
             ))}
           </div>
-          <a
-            href={project.href || project.liveUrl || "#"}
-            target="_blank"
-            className="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm text-white/80 hover:border-white/60"
-          >
-            Visit <ExternalLink className="h-4 w-4" />
-          </a>
+          {(project.href || project.liveUrl) && (
+            <a
+              href={project.href || project.liveUrl}
+              target="_blank"
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm text-white/80 hover:border-white/60"
+            >
+              Visit <ExternalLink className="h-4 w-4" />
+            </a>
+          )}
         </div>
       </div>
     </motion.div>
@@ -952,7 +1025,7 @@ const SectionSidebar: React.FC = () => {
       Object.fromEntries(SECTION_LINKS.map(({ id }) => [id, 0])) as Record<
         string,
         number
-      >
+      >,
   );
 
   useEffect(() => {
@@ -968,7 +1041,7 @@ const SectionSidebar: React.FC = () => {
       {
         rootMargin: "-40% 0px -40% 0px",
         threshold: 0.1,
-      }
+      },
     );
     SECTION_LINKS.forEach(({ id }) => {
       const el = document.getElementById(id);
@@ -1013,7 +1086,7 @@ const SectionSidebar: React.FC = () => {
 
       setSectionProgress(nextProgress);
       setActiveSection((prev) =>
-        prev !== currentSectionId ? currentSectionId : prev
+        prev !== currentSectionId ? currentSectionId : prev,
       );
       ticking = false;
     };
@@ -1031,7 +1104,7 @@ const SectionSidebar: React.FC = () => {
   }, []);
 
   const activeIndex = SECTION_LINKS.findIndex(
-    (section) => section.id === activeSection
+    (section) => section.id === activeSection,
   );
 
   return (
