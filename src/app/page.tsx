@@ -59,11 +59,11 @@ const CONFIG = {
       items: [
         "React",
         "Next.js",
-        "Tailwind",
-        "Framer Motion",
+        "TypeScript",
+        "Mantine UI",
         "HTML",
         "CSS",
-        "JS",
+        "JavaScript",
       ],
     },
     {
@@ -71,33 +71,33 @@ const CONFIG = {
       items: [
         "C#",
         ".NET",
-        "Node",
-        "TypeScript",
-        "Express",
-        "Supabase",
+        "Node.js",
+        "Express.js",
         "Postgres",
+        "MongoDB",
         "MySQL",
-        "SQL",
-        "Fast Api",
+        "Fast API",
       ],
     },
     {
       title: "Mobile",
-      items: ["React Native", "Expo", "Flutter", "Android", "Apple"],
+      items: ["React Native", "Expo", "Flutter"],
     },
     {
       title: "Game / 3D",
-      items: ["Unity", "C#", "Blender", "VR", "3D", "2D", "Game Design"],
+      items: ["Unity", "C#", "Blender", "VR"],
     },
-    { title: "AI / Data", items: ["Python", "LSTM"] },
+    { title: "AI / Data", items: ["Python", "LSTM", "Claude", "Codex"] },
     {
       title: "Tooling",
       items: [
+        "Azure",
         "Git",
+        "Docker",
         "GitHub",
         "Fork",
         "npm",
-        "Docker",
+        "Supabase",
         "Linux",
         "Plesk",
         "Hosting",
@@ -131,7 +131,7 @@ const CONFIG = {
     },
     {
       company: "PlayXScape",
-      role: "Lead Game Developer",
+      role: "Lead Game Developer Intern",
       period: "2025",
       location: "US",
       summary: "Developed 3 Mobile Games for a Startup called PlayXScape",
@@ -140,17 +140,32 @@ const CONFIG = {
         "Unity, Unity2D, C#, Blender, Aseprite, Audacity",
       ],
     },
+    {
+      company: "Envoc",
+      role: "Full Stack Software Developer Intern",
+      period: "2026",
+      location: "Baton Rouge, US",
+      summary:
+        "6-month internship with intensive and complex backend and frontend work",
+      highlights: [
+        "Single-handedly built a standalone microservice that takes in a unified payload and builds digital wallet passes for Apple, Google, and Samsung Wallet. Designed and engineered the solution, translation process, and generalized payload structure",
+        "As part of a team, created the backend and frontend for a pass/credential creation and distribution service",
+        "Azure, .NET, React, C#, Domain-Driven Design, CQRS Pattern, Collaborative Programming, Following Business Standards",
+      ],
+    },
   ],
   education: {
     hops: [
       { label: "Bocholt, DE", lat: 51.838, lon: 6.615 },
       { label: "Marshall, Missouri", lat: 39.123, lon: -93.196 },
       { label: "Hammond, Louisiana", lat: 30.504, lon: -90.461 },
+      { label: "Baton Rouge, Louisiana", lat: 30.4515, lon: -91.1871 },
     ],
     flights: [
       { from: "Bocholt (HS)", to: "Marshall (B.S.)" },
       { from: "Marshall (B.S.)", to: "Hammond (B.S.)" },
-      { from: "Hammond (B.S.)", to: "?????????" },
+      { from: "Hammond (B.S.)", to: "Baton Rouge (Internship)" },
+      { from: "Baton Rouge (Internship)", to: "?????????" },
     ],
     tickerDetail: [
       {
@@ -167,6 +182,11 @@ const CONFIG = {
         left: "Southeastern Louisiana University",
         mid: "B.S. Computer Science",
         right: "Hammond, LA",
+      },
+      {
+        left: "Envoc",
+        mid: "Associate Software Developer Intern",
+        right: "Baton Rouge, LA",
       },
     ],
   },
@@ -229,8 +249,8 @@ const SIDEBAR_ANIMATION_STEP = 0.12;
 
 const EDUCATION_TAGS = CONFIG.education.hops.map((hop, idx) => {
   const detail = CONFIG.education.tickerDetail[idx];
-  const offsets = [0, 0, 0];
-  const sides: Array<"left" | "right"> = ["right", "left", "right"];
+  const offsets = [0, 0, 0, 0];
+  const sides: Array<"left" | "right"> = ["right", "left", "right", "left"];
   return {
     lat: hop.lat,
     lon: hop.lon,
@@ -514,7 +534,7 @@ const Experience: React.FC = () => (
             <div className="mt-5 grid gap-3 text-sm text-white/70 md:grid-cols-2">
               {job.highlights.map((point) => (
                 <div key={point} className="flex items-start gap-2">
-                  <ArrowRight className="mt-0.5 h-4 w-4 text-[#58FF8A]" />
+                  <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-[#58FF8A]" />
                   <span>{point}</span>
                 </div>
               ))}
