@@ -1,7 +1,13 @@
 "use client";
 
 import React, { useRef, Suspense, useEffect, useState } from "react";
-import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useInView,
+  AnimatePresence,
+} from "framer-motion";
 import { useLanguage } from "./LanguageContext";
 import type { Lang } from "./translations";
 import { Canvas, useThree } from "@react-three/fiber";
@@ -44,7 +50,7 @@ const CONFIG = {
   location: { city: "Bocholt", country: "DE" },
   blurb:
     "More than a Programmer. I design intuitively, develop efficiently and ship securely. I dont just clock in. I take pride in what I create and make sure it represents me well. ",
-  avatar: "/imageMe.png",
+  avatar: "/imageMe.webp",
   resumeUrl: "/Resume.pdf",
   socials: [
     { name: "GitHub", icon: Github, href: "https://github.com/icaruz60" },
@@ -331,13 +337,12 @@ const lonLatToCartesian = (
 
 const ATLANTIC_CAMERA_POSITION = lonLatToCartesian(-40, 39, 4.2);
 
-// ← flip to false before `npm run build`
-const DEV_ALWAYS_SHOW_PICKER = true;
+const DEV_ALWAYS_SHOW_PICKER = false;
 
 // ---------- LANGUAGE PICKER ----------
 const FLAG_SRCS: Record<Lang, string> = {
-  en: "https://flagcdn.com/gb.svg",
-  de: "https://flagcdn.com/de.svg",
+  en: "/flags/gb.svg",
+  de: "/flags/de.svg",
 };
 const FLAG_LABELS: Record<Lang, string> = { en: "English", de: "Deutsch" };
 
@@ -375,7 +380,7 @@ const LanguagePicker: React.FC<{ onChoose: (l: Lang) => void }> = ({
       {/* centred content block */}
       <div className="flex flex-col items-center gap-12">
         <motion.p
-          className="whitespace-nowrap text-2xl uppercase tracking-[0.07em] text-white/40"
+          className="text-center text-base uppercase tracking-[0.07em] text-white/40 sm:whitespace-nowrap sm:text-2xl"
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.05, duration: 0.2 }}
@@ -383,7 +388,7 @@ const LanguagePicker: React.FC<{ onChoose: (l: Lang) => void }> = ({
           Choose your language &nbsp;/&nbsp; Sprache wählen
         </motion.p>
 
-        <div className="flex gap-10">
+        <div className="flex flex-col items-center gap-8 sm:flex-row sm:gap-10">
           {(["en", "de"] as Lang[]).map((l, idx) => (
             <motion.button
               key={l}
@@ -401,7 +406,9 @@ const LanguagePicker: React.FC<{ onChoose: (l: Lang) => void }> = ({
                 duration: choosing ? 0.2 : 0.25,
                 ease: "easeOut",
               }}
-              whileHover={choosing ? {} : { scale: 1.04, transition: { duration: 0.12 } }}
+              whileHover={
+                choosing ? {} : { scale: 1.04, transition: { duration: 0.12 } }
+              }
             >
               {/* glow */}
               <div className="pointer-events-none absolute -inset-6 -z-10 rounded-[40px] bg-[#58FF8A]/20 opacity-0 blur-2xl transition-opacity duration-150 group-hover:opacity-100" />
@@ -409,7 +416,10 @@ const LanguagePicker: React.FC<{ onChoose: (l: Lang) => void }> = ({
               <div className="overflow-hidden rounded-2xl border border-white/10 shadow-[0_24px_64px_rgba(0,0,0,0.7)] transition-all duration-150 group-hover:border-[#58FF8A]/40">
                 <img
                   src={FLAG_SRCS[l]}
-                  alt={FLAG_LABELS[l]}
+                  alt=""
+                  width={288}
+                  height={176}
+                  fetchPriority="high"
                   className="h-44 w-72 object-cover"
                   draggable={false}
                 />
@@ -430,7 +440,7 @@ const LanguageSwitcher: React.FC = () => {
   const { lang, setLang } = useLanguage();
   return (
     <motion.div
-      className="fixed left-8 top-6 z-50"
+      className="flex justify-center py-3 md:fixed md:left-8 md:top-6 md:block md:py-0 z-50"
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1.8, duration: 0.4 }}
@@ -450,6 +460,8 @@ const LanguageSwitcher: React.FC = () => {
             <img
               src={FLAG_SRCS[l]}
               alt={l}
+              width={18}
+              height={12}
               className="h-3 w-[18px] rounded-[2px] object-cover"
             />
             {l}
@@ -466,8 +478,8 @@ const SectionTitle: React.FC<{ label: string; hint?: string }> = ({
   hint,
 }) => (
   <div className="relative mx-auto max-w-6xl px-6">
-    <div className="sticky top-0 z-10 -mx-6 mb-8 bg-white/[0.02] px-6 py-4 backdrop-blur">
-      <p className="text-xs uppercase tracking-[0.4em] text-[#5c5c5c]">
+    <div className="sticky top-0 z-10 -mx-6 mb-8 bg-[#050505]/95 px-6 py-4">
+      <p className="text-xs uppercase tracking-[0.4em] text-white/50">
         // {label}
       </p>
       <h2 className="text-4xl font-black tracking-tight text-white md:text-6xl">
@@ -497,13 +509,13 @@ const Hero: React.FC = () => {
     >
       <motion.div
         style={{ y }}
-        className="mx-auto flex w-full max-w-6xl flex-col items-center gap-12 px-6 pt-5 pb-16 md:py-24 md:flex-row md:items-center"
+        className="mx-auto flex w-full max-w-6xl flex-col items-center gap-12 px-6 pt-6 pb-16 md:py-24 md:flex-row md:items-center"
       >
         <div className="flex-1 w-full space-y-10 text-center md:text-left">
           <motion.p
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: HERO_ANIMATION.role, duration: 0.6 }}
+            transition={{ delay: HERO_ANIMATION.role, duration: 0.3 }}
             className="text-sm uppercase tracking-[0.6em] text-white/70 drop-shadow-[0_4px_16px_rgba(0,0,0,0.55)]"
           >
             {t.role}
@@ -511,11 +523,12 @@ const Hero: React.FC = () => {
           <motion.h1
             className="text-[clamp(3.5rem,10vw,9rem)] text-center font-bold leading-[0.9] text-white md:text-left"
             style={{ fontFamily: "var(--font-hero-display)" }}
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{
               type: "spring",
-              stiffness: 70,
+              stiffness: 160,
+              damping: 20,
               delay: HERO_ANIMATION.name,
             }}
           >
@@ -525,9 +538,9 @@ const Hero: React.FC = () => {
           </motion.h1>
           <motion.div
             className="flex flex-wrap items-center justify-center gap-4 text-xs uppercase tracking-[0.3em] text-[#7f7f7f] md:justify-start"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: HERO_ANIMATION.stats, duration: 0.5 }}
+            transition={{ delay: HERO_ANIMATION.stats, duration: 0.25 }}
           >
             {t.heroStats.map((item) => (
               <div key={item} className="flex items-center gap-2">
@@ -539,16 +552,19 @@ const Hero: React.FC = () => {
         </div>
         <div className="flex w-full max-w-sm flex-col gap-6 md:max-w-md">
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
+            initial={{ opacity: 0, x: 24 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: HERO_ANIMATION.avatar, duration: 0.6 }}
+            transition={{ delay: HERO_ANIMATION.avatar, duration: 0.3 }}
             className="relative aspect-[5/4] w-full overflow-hidden rounded-[32px] border border-white/10 bg-white/5 shadow-[0_20px_60px_rgba(0,0,0,0.45)]"
           >
             <img
               src={CONFIG.avatar}
               alt={CONFIG.name}
               loading="eager"
+              fetchPriority="high"
               decoding="async"
+              width={480}
+              height={384}
               className="block h-full w-full object-cover"
               style={{ imageRendering: "auto" }}
             />
@@ -562,9 +578,9 @@ const Hero: React.FC = () => {
             />
           </motion.div>
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
+            initial={{ opacity: 0, x: 24 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: HERO_ANIMATION.about, duration: 0.6 }}
+            transition={{ delay: HERO_ANIMATION.about, duration: 0.3 }}
             className="rounded-3xl border border-white/10 bg-white/5 px-6 py-5 text-sm text-[#c7c7c7]"
           >
             <p className="text-xs uppercase tracking-[0.4em] text-white/60">
@@ -584,11 +600,12 @@ const Hero: React.FC = () => {
                 key={s.name}
                 href={s.href}
                 target="_blank"
-                initial={{ opacity: 0, y: 15 }}
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
                   delay: HERO_ANIMATION.socialStart + idx * 0.12,
-                  duration: 0.4,
+                  duration: 0.2,
                 }}
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 px-3 py-2 text-xs uppercase tracking-[0.3em] text-white/70 transition hover:border-white/60 hover:text-white"
               >
@@ -597,17 +614,17 @@ const Hero: React.FC = () => {
               </motion.a>
             ))}
           </div>
-          {CONFIG.resumeUrl ? (
+          {t.resumeUrl ? (
             <motion.a
-              href={CONFIG.resumeUrl}
+              href={t.resumeUrl}
               download
               target="_blank"
-              rel="noopener"
-              initial={{ opacity: 0, y: 15 }}
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 delay: HERO_ANIMATION.socialStart + 0.5,
-                duration: 0.4,
+                duration: 0.2,
               }}
               className="inline-flex items-center justify-center gap-3 rounded-full border border-[#58FF8A]/60 bg-[#0c0c0c] px-5 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white transition hover:border-[#58FF8A] hover:bg-[#111]"
             >
@@ -621,9 +638,9 @@ const Hero: React.FC = () => {
         type="button"
         aria-label={t.scrollHint}
         className="absolute left-1/2 top-[calc(100%-120px)] hidden -translate-x-1/2 rounded-full border border-transparent p-2 transition hover:border-white/40 md:block"
-        initial={{ opacity: 0, y: 12 }}
+        initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: HERO_ANIMATION.hand, duration: 0.6 }}
+        transition={{ delay: HERO_ANIMATION.hand, duration: 0.3 }}
         onClick={() =>
           document
             .getElementById("tech")
@@ -640,38 +657,38 @@ const Hero: React.FC = () => {
 const Technologies: React.FC = () => {
   const { t } = useLanguage();
   return (
-  <section
-    id="tech"
-    className="relative scroll-mt-20 border-b border-white/5 bg-transparent py-20"
-  >
-    <SectionTitle label={t.navTech} hint={t.techHint} />
-    <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-6 md:grid-cols-2 lg:grid-cols-3">
-      {CONFIG.technologies.map((cat, idx) => (
-        <motion.div
-          key={cat.title}
-          initial={{ opacity: 0, y: 8 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
-          transition={{ delay: idx * 0.05 }}
-          className="rounded-[28px] border border-white/10 bg-white/5 p-6 text-white shadow-[0_0_30px_rgba(0,0,0,0.35)]"
-        >
-          <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-white">
-            <Globe className="h-4 w-4 text-[#58FF8A]" /> {cat.title}
-          </h3>
-          <div className="flex flex-wrap gap-2">
-            {cat.items.map((t) => (
-              <span
-                key={t}
-                className="rounded-full border border-white/15 px-3 py-1 text-xs text-[#bdbdbd]"
-              >
-                {t}
-              </span>
-            ))}
-          </div>
-        </motion.div>
-      ))}
-    </div>
-  </section>
+    <section
+      id="tech"
+      className="relative scroll-mt-20 border-b border-white/5 bg-transparent py-20"
+    >
+      <SectionTitle label={t.navTech} hint={t.techHint} />
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-6 md:grid-cols-2 lg:grid-cols-3">
+        {CONFIG.technologies.map((cat, idx) => (
+          <motion.div
+            key={cat.title}
+            initial={{ opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ delay: idx * 0.05, duration: 0.25, ease: "easeOut" }}
+            className="rounded-[28px] border border-white/10 bg-white/5 p-6 text-white shadow-[0_0_30px_rgba(0,0,0,0.35)]"
+          >
+            <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-white">
+              <Globe className="h-4 w-4 text-[#58FF8A]" /> {cat.title}
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {cat.items.map((t) => (
+                <span
+                  key={t}
+                  className="rounded-full border border-white/15 px-3 py-1 text-xs text-[#bdbdbd]"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </section>
   );
 };
 
@@ -679,54 +696,59 @@ const Technologies: React.FC = () => {
 const Experience: React.FC = () => {
   const { t } = useLanguage();
   return (
-  <section
-    id="experience"
-    className="relative border-b border-white/5 bg-transparent py-24"
-  >
-    <SectionTitle
-      label={t.navExperience}
-      hint={t.experienceHint}
-    />
-    <div className="mx-auto flex max-w-6xl flex-col gap-5 px-6">
-      {CONFIG.experience.map((job, idx) => {
-        const entry = t.experience[idx];
-        return (
-        <motion.div
-          key={`${job.company}-${job.period}`}
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.25 }}
-          transition={{ delay: idx * 0.05 }}
-          className="rounded-[32px] border border-white/10 bg-white/5 p-6 text-white shadow-[0_0_30px_rgba(0,0,0,0.35)]"
-        >
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <p className="text-xs uppercase tracking-[0.4em] text-white/60">
-                {job.period}
-              </p>
-              <h3 className="text-2xl font-bold text-white">{entry?.role ?? job.role}</h3>
-              <p className="text-white/70">
-                {job.company}
-                {job.location ? ` · ${job.location}` : ""}
-              </p>
-            </div>
-          </div>
-          <p className="mt-4 text-white/80">{entry?.summary ?? job.summary}</p>
-          {(entry?.highlights ?? job.highlights) ? (
-            <div className="mt-5 grid gap-3 text-sm text-white/70 md:grid-cols-2">
-              {(entry?.highlights ?? job.highlights ?? []).map((point) => (
-                <div key={point} className="flex items-start gap-2">
-                  <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-[#58FF8A]" />
-                  <span>{point}</span>
+    <section
+      id="experience"
+      className="relative border-b border-white/5 bg-transparent py-24"
+    >
+      <SectionTitle label={t.navExperience} hint={t.experienceHint} />
+      <div className="mx-auto flex max-w-6xl flex-col gap-5 px-6">
+        {CONFIG.experience.map((job, idx) => {
+          const entry = t.experience[idx];
+          return (
+            <motion.div
+              key={`${job.company}-${job.period}`}
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.25 }}
+              transition={{
+                delay: idx * 0.05,
+                duration: 0.25,
+                ease: "easeOut",
+              }}
+              className="rounded-[32px] border border-white/10 bg-white/5 p-6 text-white shadow-[0_0_30px_rgba(0,0,0,0.35)]"
+            >
+              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.4em] text-white/60">
+                    {job.period}
+                  </p>
+                  <h3 className="text-2xl font-bold text-white">
+                    {entry?.role ?? job.role}
+                  </h3>
+                  <p className="text-white/70">
+                    {job.company}
+                    {job.location ? ` · ${job.location}` : ""}
+                  </p>
                 </div>
-              ))}
-            </div>
-          ) : null}
-        </motion.div>
-        );
-      })}
-    </div>
-  </section>
+              </div>
+              <p className="mt-4 text-white/80">
+                {entry?.summary ?? job.summary}
+              </p>
+              {(entry?.highlights ?? job.highlights) ? (
+                <div className="mt-5 grid gap-3 text-sm text-white/70 md:grid-cols-2">
+                  {(entry?.highlights ?? job.highlights ?? []).map((point) => (
+                    <div key={point} className="flex items-start gap-2">
+                      <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-[#58FF8A]" />
+                      <span>{point}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+            </motion.div>
+          );
+        })}
+      </div>
+    </section>
   );
 };
 
@@ -806,7 +828,7 @@ const DestinationsPanel: React.FC = () => {
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false, amount: 0.4 }}
-      transition={{ duration: 0.5, delay }}
+      transition={{ duration: 0.25, ease: "easeOut", delay }}
       className={`grid grid-cols-3 gap-3 rounded-2xl border bg-white/5 p-4 text-sm text-white/85 ${extraClasses}`}
     >
       <span className="truncate font-medium text-white">{row.left}</span>
@@ -821,7 +843,7 @@ const DestinationsPanel: React.FC = () => {
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false, amount: 0.4 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
     >
       <div>
         <p className="text-xs uppercase tracking-[0.4em] text-white/50">
@@ -873,16 +895,28 @@ const Education: React.FC = () => {
     once: false,
     amount: 0.4,
   });
+  // Defer WebGL init until the browser is genuinely idle so it never competes
+  // with hero animations or the LCP image. Falls back to a 2s timeout on
+  // browsers that don't support requestIdleCallback (older Safari).
+  const [canvasReady, setCanvasReady] = useState(false);
+  useEffect(() => {
+    if ("requestIdleCallback" in window) {
+      const id = window.requestIdleCallback(() => setCanvasReady(true), {
+        timeout: 2000,
+      });
+      return () => window.cancelIdleCallback(id);
+    } else {
+      const id = setTimeout(() => setCanvasReady(true), 2000);
+      return () => clearTimeout(id);
+    }
+  }, []);
 
   return (
     <section
       id="education"
       className="relative border-b border-white/5 bg-transparent py-24"
     >
-      <SectionTitle
-        label={t.navEducation}
-        hint={t.educationHint}
-      />
+      <SectionTitle label={t.navEducation} hint={t.educationHint} />
 
       <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 px-6 md:grid-cols-2">
         <motion.div
@@ -891,39 +925,41 @@ const Education: React.FC = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.5 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
           onWheelCapture={(e) => {
             e.preventDefault();
           }}
         >
-          <Canvas camera={{ position: ATLANTIC_CAMERA_POSITION, fov: 50 }}>
-            <ambientLight intensity={0.7} />
-            <Stars radius={50} depth={20} count={1000} factor={3} fade />
-            <Suspense fallback={null}>
-              <GlobeReal
-                hops={CONFIG.education.hops}
-                tags={EDUCATION_TAGS}
-                isActive={globeInView}
+          {canvasReady && (
+            <Canvas camera={{ position: ATLANTIC_CAMERA_POSITION, fov: 50 }}>
+              <ambientLight intensity={0.7} />
+              <Stars radius={50} depth={20} count={1000} factor={3} fade />
+              <Suspense fallback={null}>
+                <GlobeReal
+                  hops={CONFIG.education.hops}
+                  tags={EDUCATION_TAGS}
+                  isActive={globeInView}
+                />
+              </Suspense>
+              <ZoomControls controlsRef={controlsRef} />
+              <OrbitControls
+                ref={controlsRef}
+                enablePan={false}
+                enableZoom
+                enableDamping
+                dampingFactor={0.08}
+                minDistance={2.6}
+                maxDistance={6.2}
               />
-            </Suspense>
-            <ZoomControls controlsRef={controlsRef} />
-            <OrbitControls
-              ref={controlsRef}
-              enablePan={false}
-              enableZoom
-              enableDamping
-              dampingFactor={0.08}
-              minDistance={2.6}
-              maxDistance={6.2}
-            />
-          </Canvas>
+            </Canvas>
+          )}
         </motion.div>
         <motion.div
           className="space-y-6"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.5 }}
-          transition={{ duration: 0.7, ease: "easeOut", delay: 0.1 }}
+          transition={{ duration: 0.35, ease: "easeOut", delay: 0.1 }}
         >
           <DestinationsPanel />
         </motion.div>
@@ -931,6 +967,57 @@ const Education: React.FC = () => {
     </section>
   );
 };
+
+// ---------- IDLE VIDEO PRELOADER ----------
+// Fetches project preview videos one-at-a-time during browser idle time so they
+// are already cached when the user scrolls to the Projects section.
+function useIdleVideoPreload(urls: (string | undefined)[]) {
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const valid = urls.filter((u): u is string => !!u);
+    if (!valid.length) return;
+
+    let cancelled = false;
+    const controllers: AbortController[] = [];
+
+    const loadNext = (idx: number) => {
+      if (cancelled || idx >= valid.length) return;
+
+      const run = () => {
+        if (cancelled) return;
+        const ctrl = new AbortController();
+        controllers.push(ctrl);
+        fetch(valid[idx], {
+          signal: ctrl.signal,
+          // priority: "low" means the browser always yields to anything more
+          // important — including the fetchPriority="high" hero image and
+          // any user-initiated navigation. Safe to run from the start.
+          priority: "low",
+        } as RequestInit & { priority?: string })
+          .then(() => loadNext(idx + 1))
+          .catch(() => {}); // ignore aborts / network errors
+      };
+
+      if ("requestIdleCallback" in window) {
+        window.requestIdleCallback(run, { timeout: 5000 });
+      } else {
+        setTimeout(run, 300);
+      }
+    };
+
+    // Start at t=1s — early enough to use idle time during the language picker,
+    // late enough to not block the initial HTML/CSS/JS parse.
+    // The browser's own scheduler keeps priority:"low" fetches below anything
+    // tagged high (e.g. imageMe.webp), so there is no manual gating needed.
+    const timer = setTimeout(() => loadNext(0), 1000);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+      controllers.forEach((c) => c.abort());
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+}
 
 // ---------- PROJECTS ----------
 const ProjectCard: React.FC<{
@@ -945,16 +1032,22 @@ const ProjectCard: React.FC<{
     project.image ??
     "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80";
 
+  // Only mount the video element once the card is near the viewport —
+  // prevents all 5 videos downloading simultaneously on page load
+  const cardRef = useRef<HTMLDivElement>(null);
+  const cardInView = useInView(cardRef, { once: true, margin: "200px" });
+
   const renderMedia = () => {
     if (project.previewVideo) {
       return (
         <video
-          src={project.previewVideo}
+          src={cardInView ? project.previewVideo : undefined}
           className="h-full w-full object-cover"
           autoPlay
           loop
           muted
           playsInline
+          preload="none"
         />
       );
     }
@@ -969,7 +1062,7 @@ const ProjectCard: React.FC<{
 
   const renderPhonePreview = () => (
     <div className="relative mx-auto aspect-[9/19] w-full max-w-[280px]">
-      <div className="pointer-events-none absolute -inset-4 rounded-[40px] bg-[#58FF8A]/30 opacity-0 blur-3xl transition duration-500 group-hover:opacity-70" />
+      <div className="pointer-events-none absolute -inset-4 rounded-[40px] bg-[#58FF8A]/30 opacity-0 blur-3xl transition duration-200 group-hover:opacity-70" />
       <div className="relative h-full w-full rounded-[40px] border border-white/10 bg-gradient-to-br from-[#0f0f0f] via-[#090909] to-[#060606] p-3 shadow-[0_20px_60px_rgba(0,0,0,0.65)] transition-transform duration-500 group-hover:scale-[1.03]">
         <div className="relative h-full w-full overflow-hidden rounded-[30px] bg-black">
           {renderMedia()}
@@ -981,7 +1074,7 @@ const ProjectCard: React.FC<{
 
   const renderWebPreview = () => (
     <div className="relative w-full">
-      <div className="pointer-events-none absolute -inset-4 rounded-[40px] bg-[#58FF8A]/30 opacity-0 blur-3xl transition duration-500 group-hover:opacity-70" />
+      <div className="pointer-events-none absolute -inset-4 rounded-[40px] bg-[#58FF8A]/30 opacity-0 blur-3xl transition duration-200 group-hover:opacity-70" />
       <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[32px] border border-white/10 bg-[#0b0b0b]">
         <div className="absolute inset-0 transition duration-500 group-hover:scale-105">
           {renderMedia()}
@@ -993,9 +1086,11 @@ const ProjectCard: React.FC<{
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
+      ref={cardRef}
+      initial={{ opacity: 0, y: 8 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false, amount: 0.25 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
       className="mx-auto max-w-6xl px-6 py-8"
     >
       <div
@@ -1007,6 +1102,8 @@ const ProjectCard: React.FC<{
           <a
             href={project.href || project.liveUrl}
             target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`View ${projT?.title ?? project.title}`}
             className={`group w-full md:w-1/2 ${
               isPhonePreview ? "flex justify-center" : ""
             }`}
@@ -1023,8 +1120,12 @@ const ProjectCard: React.FC<{
           </div>
         )}
         <div className="w-full space-y-4 md:w-1/2">
-          <h3 className="text-2xl font-bold text-white">{projT?.title ?? project.title}</h3>
-          <p className="max-w-prose text-white/70">{projT?.description ?? project.description}</p>
+          <h3 className="text-2xl font-bold text-white">
+            {projT?.title ?? project.title}
+          </h3>
+          <p className="max-w-prose text-white/70">
+            {projT?.description ?? project.description}
+          </p>
           <div className="flex flex-wrap gap-2">
             {project.tags.map((tag) => (
               <span
@@ -1039,6 +1140,8 @@ const ProjectCard: React.FC<{
             <a
               href={project.href || project.liveUrl}
               target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Visit ${projT?.title ?? project.title}`}
               className="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm text-white/80 hover:border-white/60"
             >
               {t.visit} <ExternalLink className="h-4 w-4" />
@@ -1071,83 +1174,78 @@ const Projects: React.FC = () => {
 const ContactSection: React.FC = () => {
   const { t } = useLanguage();
   return (
-  <section
-    id="contact"
-    className="relative border-t border-white/5 bg-transparent py-24"
-  >
-    <SectionTitle label={t.navContact} hint={t.contactHint} />
-    <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6">
-      <div className="grid gap-6 md:grid-cols-2">
-        <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-6">
-          <p className="text-xs uppercase tracking-[0.4em] text-white/60">
-            {t.directLine}
-          </p>
-          <h3 className="mt-3 text-3xl font-bold text-white">
-            {t.likeWhatYouSee}
-          </h3>
-          <p className="mt-3 text-white/70">
-            {t.emailCTA}
-          </p>
-          <a
-            href="mailto:contact@gerritvisser.de"
-            className="mt-6 inline-flex items-center gap-3 rounded-full border border-white px-5 py-3 text-sm uppercase tracking-[0.3em] text-white transition hover:bg-white hover:text-black"
-          >
-            <Mail className="h-4 w-4" /> {t.sendEmail}
-          </a>
-        </div>
-        <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-6">
-          <p className="text-xs uppercase tracking-[0.4em] text-white/60">
-            {t.alsoFindMe}
-          </p>
-          <div className="mt-3 flex items-center gap-3 text-white">
-            <MapPin className="h-5 w-5 text-[#58FF8A]" />
-            {CONFIG.location.city}, {CONFIG.location.country}
+    <section
+      id="contact"
+      className="relative border-t border-white/5 bg-transparent py-24"
+    >
+      <SectionTitle label={t.navContact} hint={t.contactHint} />
+      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6">
+        <div className="grid gap-6 md:grid-cols-2">
+          <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-6">
+            <p className="text-xs uppercase tracking-[0.4em] text-white/60">
+              {t.directLine}
+            </p>
+            <h3 className="mt-3 text-3xl font-bold text-white">
+              {t.likeWhatYouSee}
+            </h3>
+            <p className="mt-3 text-white/70">{t.emailCTA}</p>
+            <a
+              href="mailto:contact@gerritvisser.de"
+              className="mt-6 inline-flex items-center gap-3 rounded-full border border-white px-5 py-3 text-sm uppercase tracking-[0.3em] text-white transition hover:bg-white hover:text-black"
+            >
+              <Mail className="h-4 w-4" /> {t.sendEmail}
+            </a>
           </div>
-          <p className="mt-3 text-white/70">
-            {t.tagAlongText}
-          </p>
-          <div className="mt-5 flex flex-wrap gap-3">
-            {CONFIG.socials
-              .filter((s) => s.name.toLowerCase() !== "email")
-              .map((s) => (
+          <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-6">
+            <p className="text-xs uppercase tracking-[0.4em] text-white/60">
+              {t.alsoFindMe}
+            </p>
+            <div className="mt-3 flex items-center gap-3 text-white">
+              <MapPin className="h-5 w-5 text-[#58FF8A]" />
+              {CONFIG.location.city}, {CONFIG.location.country}
+            </div>
+            <p className="mt-3 text-white/70">{t.tagAlongText}</p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              {CONFIG.socials
+                .filter((s) => s.name.toLowerCase() !== "email")
+                .map((s) => (
+                  <a
+                    key={s.name}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white/70 hover:border-white/60"
+                  >
+                    {React.createElement(s.icon, { className: "h-4 w-4" })}
+                    <span>{s.name}</span>
+                  </a>
+                ))}
+              {t.resumeUrl ? (
                 <a
-                  key={s.name}
-                  href={s.href}
+                  href={t.resumeUrl}
+                  download
                   target="_blank"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white/70 hover:border-white/60"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-[#58FF8A]/40 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white hover:border-[#58FF8A]"
                 >
-                  {React.createElement(s.icon, { className: "h-4 w-4" })}
-                  <span>{s.name}</span>
+                  <ArrowRight className="h-4 w-4 rotate-90 text-[#58FF8A]" />
+                  <span>{t.resumeShort}</span>
                 </a>
-              ))}
-            {CONFIG.resumeUrl ? (
-              <a
-                href={CONFIG.resumeUrl}
-                download
-                target="_blank"
-                rel="noopener"
-                className="inline-flex items-center gap-2 rounded-full border border-[#58FF8A]/40 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white hover:border-[#58FF8A]"
-              >
-                <ArrowRight className="h-4 w-4 rotate-90 text-[#58FF8A]" />
-                <span>Resume</span>
-              </a>
-            ) : null}
+              ) : null}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-white/10 bg-white/[0.02] px-6 py-4 text-sm text-white/60">
-        <div>
-          <p className="uppercase tracking-[0.45em] text-white/80">
-            {CONFIG.role}
-          </p>
-          <p className="text-2xl font-semibold text-white">{CONFIG.name}</p>
+        <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-white/10 bg-white/[0.02] px-6 py-4 text-sm text-white/60">
+          <div>
+            <p className="uppercase tracking-[0.45em] text-white/80">
+              {t.role}
+            </p>
+            <p className="text-2xl font-semibold text-white">{CONFIG.name}</p>
+          </div>
+          <p className="text-white/50">{t.openTo}</p>
         </div>
-        <p className="text-white/50">
-          {t.openTo}
-        </p>
       </div>
-    </div>
-  </section>
+    </section>
   );
 };
 
@@ -1193,7 +1291,7 @@ const SectionSidebar: React.FC = () => {
       if (el) observer.observe(el);
     });
     return () => observer.disconnect();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -1279,7 +1377,7 @@ const SectionSidebar: React.FC = () => {
               }}
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: itemDelay, duration: 0.4 }}
+              transition={{ delay: itemDelay, duration: 0.2 }}
             >
               {section.label}
             </motion.button>
@@ -1294,7 +1392,7 @@ const SectionSidebar: React.FC = () => {
                 }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: itemDelay + 0.05, duration: 0.4 }}
+                transition={{ delay: itemDelay + 0.05, duration: 0.2 }}
               >
                 {[0.3, 0.6, 0.9].map((threshold, dash) => {
                   const filled =
@@ -1323,6 +1421,8 @@ const ScrollHand: React.FC<{ className?: string }> = ({ className }) => (
   <img
     src="/pixel_hand.png"
     alt="Scroll down"
+    width={48}
+    height={56}
     className={`drop-shadow-[0_0_12px_rgba(0,0,0,0.45)] scroll-hand-bounce ${
       className ?? ""
     }`}
@@ -1336,7 +1436,12 @@ export default function Portfolio() {
   const [devDismissed, setDevDismissed] = React.useState(false);
 
   const showPicker = DEV_ALWAYS_SHOW_PICKER ? !devDismissed : !hasChosen;
-  const showSite   = DEV_ALWAYS_SHOW_PICKER ? devDismissed  : hasChosen;
+  const showSite = DEV_ALWAYS_SHOW_PICKER ? devDismissed : hasChosen;
+
+  // Preload project preview videos from t=1s at priority:"low".
+  // Runs even during the language picker — the browser yields these fetches
+  // to anything higher priority (like imageMe.webp) automatically.
+  useIdleVideoPreload(CONFIG.projects.map((p) => p.previewVideo));
 
   const handleChoose = (l: Lang) => {
     setLang(l);
@@ -1351,16 +1456,23 @@ export default function Portfolio() {
         )}
       </AnimatePresence>
       {showSite && (
-        <div className="mesh-bg min-h-screen scroll-smooth bg-[#050505] text-white lg:pr-28">
+        <motion.div
+          className="mesh-bg min-h-screen scroll-smooth bg-[#050505] text-white lg:pr-28"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+        >
           <LanguageSwitcher />
           <SectionSidebar />
-          <Hero />
-          <Technologies />
-          <Experience />
-          <Education />
-          <Projects />
-          <ContactSection />
-        </div>
+          <main>
+            <Hero />
+            <Technologies />
+            <Experience />
+            <Education />
+            <Projects />
+            <ContactSection />
+          </main>
+        </motion.div>
       )}
     </>
   );

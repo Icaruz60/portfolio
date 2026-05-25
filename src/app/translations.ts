@@ -14,6 +14,8 @@ export const T = {
     blurb:
       "More than a Programmer. I design intuitively, develop efficiently and ship securely. I dont just clock in. I take pride in what I create and make sure it represents me well.",
     downloadResume: "Download Resume",
+    resumeShort: "Resume",
+    resumeUrl: "/Resume.pdf",
     scrollHint: "Jump to technologies",
 
     // Navigation
@@ -96,27 +98,28 @@ export const T = {
       {
         title: "Ascend — Social Media for Productivity",
         description:
-          "Ascend is a phone app fighting the doomscrolling epidemic. Instead of mindless scrolling, it rewards productivity and strengthens real friendships — share meaningful progress, level up together, and actually do something with your time.",
+          "Ascend is a phone app fighting the doomscrolling epidemic. Instead of mindless scrolling, it rewards productivity and strengthens real friendships. You can share meaningful progress, level up together, and actually do something with your time.",
       },
       {
         title: "IMASS Wolke — Legacy Science, Modernized",
         description:
-          "Led a 5-person team building a cloud platform that containerizes legacy Fortran science models and makes them accessible via a modern web UI — no manual environment setup for researchers. Built a visual Workflow Builder letting scientists chain model inputs and outputs without writing a single line of code. Contributed to securing $1.2M in federal funding for ARA from the US Congress.",
+          "Led a 5-person team building a cloud platform that containerizes legacy Fortran science models and makes them accessible via a modern web UI so that no manual environment setup is needed for researchers anymore. Built a visual Workflow Builder letting scientists chain model inputs and outputs without writing a single line of code. Contributed to securing $1.2M in federal funding for ARA from the US Congress.",
       },
       {
-        title: "Wallet Pass Generator — One API, Three Platforms",
+        title:
+          "Wallet Pass Generator — Industry used Pass Generation Microservice",
         description:
-          "Engineered a standalone microservice that abstracts the fundamentally different formats of Apple Wallet, Google Wallet, and Samsung Wallet into a single unified input. Handles complete pass generation and cryptographic signing for all three platforms via Azure Functions. Sole engineer — from architecture and design to containerized deployment on Microsoft Azure.",
+          "Engineered a standalone microservice that abstracts the fundamentally different formats of Apple Wallet, Google Wallet, and Samsung Wallet into a single unified input. Handles complete pass generation and cryptographic signing for all three platforms via Azure Functions. Went as sole engineer from architecture and design to containerized deployment on Microsoft Azure.",
       },
       {
         title: "Wolf of AI Street — Trading with LSTM",
         description:
-          "Built a custom dataset from 5 years of hourly EUR/USD OHLC data fused with GDELT news sentiment, including a custom relevance scoring system for article weighting across 33,000+ aligned time-series points. Trained an LSTM through three iterative architectures — directional prediction, confidence-driven forecasting, and a full trading bot — each rebuilt from scratch based on the previous model's results.",
+          "Built a custom dataset from 5 years of hourly EUR/USD OHLC data fused with GDELT news sentiment, including a custom relevance scoring system for article weighting across 33,000+ aligned time-series points. Trained an LSTM through three iterative architectures: directional prediction, confidence-driven forecasting, and a full trading bot. each generation was improved based on the previous model's results.",
       },
       {
         title: "TempoChores — Timed Cleaning",
         description:
-          "Chores are a chore. They're time-consuming, monotone, and easy to put off. TempoChores fixes that — tell it how much time you have and which chores are due, and it builds the optimal schedule for you automatically. Timing your tasks makes them feel shorter. Leaderboards and levels coming soon.",
+          "Chores are a chore. They're time-consuming, monotone, and easy to put off. TempoChores fixes that: Tell it how much time you have and which chores are due, and it builds the optimal schedule for you automatically. Timing your tasks makes them feel shorter. Leaderboards and levels coming soon.",
       },
       {
         title: "MenuMate — Interactive Restaurant Menus",
@@ -139,6 +142,8 @@ export const T = {
     blurb:
       "Mehr als ein Programmierer. Ich designe intuitiv, entwickle effizient und liefere sicher. Ich mache nicht einfach Dienst nach Vorschrift. Ich bin stolz auf das was ich baue und stelle sicher, dass es mich gut repräsentiert.",
     downloadResume: "Lebenslauf herunterladen",
+    resumeShort: "Lebenslauf",
+    resumeUrl: "/Lebenslauf.pdf",
     scrollHint: "Zu Technologien springen",
 
     // Navigation
@@ -166,7 +171,7 @@ export const T = {
     directLine: "Direktkontakt",
     likeWhatYouSee: "Gefällt dir was du siehst?",
     emailCTA:
-      "Schreib mir eine Mail und wir legen los. In Stunden, nicht Wochen.",
+      "Schreib mir eine Mail und wir verbinden uns. In Stunden, nicht Wochen.",
     sendEmail: "E-Mail senden",
     alsoFindMe: "Auch hier zu finden",
     tagAlongText:
@@ -184,16 +189,16 @@ export const T = {
         summary:
           "6-monatiges Praktikum mit intensiver und komplexer Backend- und Frontend-Arbeit",
         highlights: [
-          "Eigenständig einen Microservice entwickelt, der einen einheitlichen Payload entgegennimmt und digitale Wallet-Passes für Apple, Google und Samsung Wallet erstellt. Lösung, Übersetzungsprozess und generalisierte Payload-Struktur selbst konzipiert und umgesetzt",
+          "Habe eigenständig einen Microservice entwickelt, der eine einheitliche Payload entgegennimmt und digitale Wallet-Passes für Apple, Google und Samsung Wallet erstellt. Lösung, Übersetzungsprozess und generalisierte Payload-Struktur selbst konzipiert und umgesetzt",
           "Im Team Backend und Frontend eines Pass- und Credential-Erstellungs- und Verteilungsdienstes entwickelt",
           "Azure, .NET, React, C#, Domain-Driven Design, CQRS Pattern, Collaborative Programming, Following Business Standards",
         ],
       },
       {
         role: "Lead Game Developer Intern",
-        summary: "3 Mobile Games für das Startup PlayXScape entwickelt",
+        summary: "3 Handy Spiele für das Startup PlayXScape entwickelt",
         highlights: [
-          "3 verschiedene 2D Unity Mobile Games mit Fokus auf Performance und Plattformfreundlichkeit gebaut",
+          "3 verschiedene 2D Unity Handy Spiele mit Fokus auf Performance und Plattformfreundlichkeit gebaut",
           "Unity, Unity2D, C#, Blender, Aseprite, Audacity",
         ],
       },
@@ -225,19 +230,20 @@ export const T = {
           "Ascend ist eine App gegen das Doomscrolling-Problem. Statt sinnlosem Scrollen belohnt sie Produktivität und stärkt echte Freundschaften. Teile echte Fortschritte, levele gemeinsam auf und tu endlich was mit deiner Zeit.",
       },
       {
-        title: "IMASS Wolke — Legacy-Wissenschaft, modernisiert",
+        title: "IMASS Wolke — Veraltete Wissenschaft, modernisiert",
         description:
-          "Teamleiter eines 5-köpfigen Teams beim Bau einer Cloud-Plattform, die Legacy-Fortran-Wissenschaftsmodelle containerisiert und über eine moderne Web-UI zugänglich macht. Kein manuelles Environment-Setup mehr für Forscher. Dazu ein visueller Workflow-Builder, mit dem Wissenschaftler Modell-Ein- und Ausgaben verketten können ohne eine Zeile Code zu schreiben. Mitgewirkt an der Sicherung von 1,2 Mio. USD Bundesförderung für ARA durch den US-Kongress.",
+          "Teamleiter eines 5-köpfigen Teams beim Bau einer Cloud-Plattform, die Legacy-Fortran-Wissenschaftsmodelle containerisiert und über eine moderne Web-UI einfach zugänglich macht. Kein manuelles Environment-Setup mehr für Forscher. Dazu noch ein visueller Workflow-Builder, mit dem Wissenschaftler Modell-Ein- und Ausgaben verketten können ohne eine Zeile Code zu schreiben. Mitgewirkt an der Sicherung von 1,2 Mio. USD Bundesförderung für ARA durch den US-Kongress.",
       },
       {
-        title: "Wallet Pass Generator — Eine API, drei Plattformen",
+        title:
+          "Wallet Pass Generator — Industrie genutzter Pass-Generierungs-Microservice",
         description:
           "Einen eigenständigen Microservice entwickelt, der die grundlegend unterschiedlichen Formate von Apple Wallet, Google Wallet und Samsung Wallet in einer einzigen Eingabeschnittstelle abstrahiert. Vollständige Pass-Generierung und kryptografische Signierung für alle drei Plattformen via Azure Functions. Alleiniger Ingenieur von der Architektur bis zum containerisierten Deployment auf Microsoft Azure.",
       },
       {
-        title: "Wolf of AI Street — Trading mit LSTM",
+        title: "Wolf of AI Street — LSTM Trading-bot",
         description:
-          "Einen eigenen Datensatz aus 5 Jahren stündlicher EUR/USD OHLC-Daten kombiniert mit GDELT-Nachrichtensentiment aufgebaut. Mit eigenem Relevanz-Scoring über mehr als 33.000 ausgerichtete Zeitreihenpunkte. Ein LSTM über drei iterative Architekturen trainiert: Richtungsvorhersage, konfidenzgesteuerte Vorhersage und ein Trading-Bot. Jede Version neu konzipiert auf Basis der vorherigen Ergebnisse.",
+          "Einen eigenen Datensatz aus 5 Jahren stündlicher EUR/USD OHLC-Daten kombiniert mit GDELT-Nachrichtensentimentdaten aufgebaut. Mit eigenem Relevanz-Scoring über mehr als 33.000 ausgerichtete Zeitreihenpunkte. Ein LSTM über drei iterative Architekturen trainiert: Richtungsvorhersage, konfidenzgesteuerte Vorhersage und ein Trading-Bot. Jede Generation wurde verbessert auf Basis der vorherigen Ergebnisse.",
       },
       {
         title: "TempoChores — Zeitgesteuertes Putzen",
@@ -247,7 +253,7 @@ export const T = {
       {
         title: "MenuMate — Interaktive Restaurantmenüs",
         description:
-          "Eine Web-App, die das Restauranterlebnis modernisiert. Smarte Filter und ein verbessertes Bewertungssystem ersetzen Textwände, damit du wirklich findest was du essen willst.",
+          "Eine Web-App, die das Restauranterlebnis modernisiert. Smarte Filter und ein verbessertes Bewertungssystem ersetze Menüs voller Text, damit du wirklich findest was du essen willst.",
       },
     ],
   },

@@ -36,8 +36,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Preload the language-picker flags so the LCP element is ready
+            before React hydrates. GB flag is shown first (default/top). */}
+        <link rel="preload" as="image" href="/flags/gb.svg" />
+        <link rel="preload" as="image" href="/flags/de.svg" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${heroDisplay.variable} antialiased`}
+        suppressHydrationWarning
       >
         <LanguageProvider>{children}</LanguageProvider>
       </body>

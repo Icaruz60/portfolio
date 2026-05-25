@@ -1,0 +1,118 @@
+# ============================================================
+# Cache-Control — long TTL for immutable assets, no-cache for HTML
+# ============================================================
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 year"
+
+  # HTML must always re-validate so visitors get fresh content
+  ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Hashed Next.js chunks/CSS — truly immutable
+  <FilesMatch "/_next/static/">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # Static media assets in the public root (no content-hash in name,
+  # so give a shorter TTL so updates can propagate in a few days)
+  <FilesMatch "\.(png|jpg|jpeg|gif|webp|ico|svg)$">
+    Header set Cache-Control "public, max-age=604800, stale-while-revalidate=86400"
+  </FilesMatch>
+
+  <FilesMatch "\.(mp4|webm|ogv)$">
+    Header set Cache-Control "public, max-age=604800, stale-while-revalidate=86400"
+  </FilesMatch>
+
+  <FilesMatch "\.(woff|woff2|ttf|otf|eot)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  <FilesMatch "\.(pdf)$">
+    Header set Cache-Control "public, max-age=86400"
+  </FilesMatch>
+
+  # HTML — always revalidate
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+
+  # ============================================================
+  # Security headers
+  # ============================================================
+
+  # Prevent clickjacking
+  Header always set X-Frame-Options "SAMEORIGIN"
+
+  # Prevent MIME-type sniffing
+  Header always set X-Content-Type-Options "nosniff"
+
+  # Control referrer information
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # Restrict browser features
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+
+  # Force HTTPS for 1 year (only enable after confirming HTTPS works!)
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+  # Cross-Origin headers (improves Lighthouse "uses efficient cache policy" score)
+  Header always set Cross-Origin-Opener-Policy "same-origin-allow-popups"
+  Header always set Cross-Origin-Resource-Policy "cross-origin"
+
+  # Content Security Policy
+  # - script-src unsafe-inline: Next.js static export injects inline bootstrap scripts
+  # - style-src unsafe-inline: Framer Motion writes inline styles on animated elements
+  # - worker-src blob:: troika-three-text spawns Web Workers via blob: URLs
+  # - img-src unsplash: fallback project card image is from Unsplash
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://images.unsplash.com; media-src 'self'; font-src 'self'; worker-src blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+
+  # CORS for font files loaded from CDN
+  <FilesMatch "\.(woff2|woff|ttf|otf|eot)$">
+    Header set Access-Control-Allow-Origin "*"
+  </FilesMatch>
+</IfModule>
+
+# ============================================================
+# Gzip / Brotli compression
+# ============================================================
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE application/wasm
+</IfModule>
+
+# ============================================================
+# URL rewriting + pre-compressed Brotli serving
+# ============================================================
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # --- Clean URLs (preserve existing server behaviour) ---
+  # Redirect any request for a .html URL to the clean version
+  RewriteCond %{THE_REQUEST} \s/([^\s]+)\.html [NC]
+  RewriteRule ^ /%1 [R=301,L]
+
+  # Internally rewrite clean URLs to their .html file on disk
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^(.*)$ $1.html [L]
+
+  # --- Serve pre-compressed Brotli files when available ---
+  RewriteCond %{HTTP:Accept-Encoding} br
+  RewriteCond %{REQUEST_FILENAME}.br -f
+  RewriteRule ^(.*)$ $1.br [QSA,L]
+</IfModule>
+
+# Set correct MIME types for pre-compressed files
+<FilesMatch "\.js\.br$">
+  ForceType application/javascript
+  Header set Content-Encoding br
+</FilesMatch>
+<FilesMatch "\.css\.br$">
+  ForceType text/css
+  Header set Content-Encoding br
+</FilesMatch>
