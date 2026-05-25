@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useRef, Suspense, useEffect, useState } from "react";
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
+import { useLanguage } from "./LanguageContext";
+import type { Lang } from "./translations";
 import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls, Stars, Html } from "@react-three/drei";
 import { GlobeReal } from "./Globereal";
@@ -283,15 +285,6 @@ const CONFIG = {
   ],
 };
 
-const SECTION_LINKS = [
-  { id: "intro", label: "Profile" },
-  { id: "tech", label: "Technologies" },
-  { id: "experience", label: "Experience" },
-  { id: "education", label: "Education" },
-  { id: "projects", label: "Projects" },
-  { id: "contact", label: "Contact" },
-];
-
 const HERO_ANIMATION = {
   role: 0.15,
   name: 0.3,
@@ -338,6 +331,135 @@ const lonLatToCartesian = (
 
 const ATLANTIC_CAMERA_POSITION = lonLatToCartesian(-40, 39, 4.2);
 
+// ← flip to false before `npm run build`
+const DEV_ALWAYS_SHOW_PICKER = true;
+
+// ---------- LANGUAGE PICKER ----------
+const FLAG_SRCS: Record<Lang, string> = {
+  en: "https://flagcdn.com/gb.svg",
+  de: "https://flagcdn.com/de.svg",
+};
+const FLAG_LABELS: Record<Lang, string> = { en: "English", de: "Deutsch" };
+
+const LanguagePicker: React.FC<{ onChoose: (l: Lang) => void }> = ({
+  onChoose,
+}) => {
+  const [choosing, setChoosing] = React.useState<Lang | null>(null);
+
+  const handleClick = (l: Lang) => {
+    if (choosing) return;
+    setChoosing(l);
+    setTimeout(() => onChoose(l), 380);
+  };
+
+  return (
+    <motion.div
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 200,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#050505",
+        backgroundImage: `
+          linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),
+          linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)
+        `,
+        backgroundSize: "20px 20px, 20px 20px, 80px 80px, 80px 80px",
+      }}
+      exit={{ opacity: 0, transition: { duration: 0.25, ease: "easeInOut" } }}
+    >
+      {/* centred content block */}
+      <div className="flex flex-col items-center gap-12">
+        <motion.p
+          className="whitespace-nowrap text-2xl uppercase tracking-[0.07em] text-white/40"
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05, duration: 0.2 }}
+        >
+          Choose your language &nbsp;/&nbsp; Sprache wählen
+        </motion.p>
+
+        <div className="flex gap-10">
+          {(["en", "de"] as Lang[]).map((l, idx) => (
+            <motion.button
+              key={l}
+              type="button"
+              onClick={() => handleClick(l)}
+              className="group relative flex flex-col items-center gap-5 focus:outline-none"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{
+                opacity: choosing && choosing !== l ? 0 : 1,
+                y: 0,
+                scale: choosing === l ? 1.07 : 1,
+              }}
+              transition={{
+                delay: choosing ? 0 : 0.1 + idx * 0.05,
+                duration: choosing ? 0.2 : 0.25,
+                ease: "easeOut",
+              }}
+              whileHover={choosing ? {} : { scale: 1.04, transition: { duration: 0.12 } }}
+            >
+              {/* glow */}
+              <div className="pointer-events-none absolute -inset-6 -z-10 rounded-[40px] bg-[#58FF8A]/20 opacity-0 blur-2xl transition-opacity duration-150 group-hover:opacity-100" />
+              {/* flag card */}
+              <div className="overflow-hidden rounded-2xl border border-white/10 shadow-[0_24px_64px_rgba(0,0,0,0.7)] transition-all duration-150 group-hover:border-[#58FF8A]/40">
+                <img
+                  src={FLAG_SRCS[l]}
+                  alt={FLAG_LABELS[l]}
+                  className="h-44 w-72 object-cover"
+                  draggable={false}
+                />
+              </div>
+              <span className="text-sm uppercase tracking-[0.4em] text-white/50 transition-colors duration-100 group-hover:text-white">
+                {FLAG_LABELS[l]}
+              </span>
+            </motion.button>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+// ---------- LANGUAGE SWITCHER (on-page, top-left) ----------
+const LanguageSwitcher: React.FC = () => {
+  const { lang, setLang } = useLanguage();
+  return (
+    <motion.div
+      className="fixed left-8 top-6 z-50"
+      initial={{ opacity: 0, y: -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 1.8, duration: 0.4 }}
+    >
+      <div className="flex items-center gap-0.5 rounded-full border border-white/10 bg-black/60 p-1 backdrop-blur-sm">
+        {(["en", "de"] as Lang[]).map((l) => (
+          <button
+            key={l}
+            type="button"
+            onClick={() => setLang(l)}
+            className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium uppercase tracking-[0.3em] transition-all duration-200 ${
+              lang === l
+                ? "bg-white/15 text-white"
+                : "text-white/35 hover:text-white/70"
+            }`}
+          >
+            <img
+              src={FLAG_SRCS[l]}
+              alt={l}
+              className="h-3 w-[18px] rounded-[2px] object-cover"
+            />
+            {l}
+          </button>
+        ))}
+      </div>
+    </motion.div>
+  );
+};
+
 // ---------- SHARED ----------
 const SectionTitle: React.FC<{ label: string; hint?: string }> = ({
   label,
@@ -358,6 +480,7 @@ const SectionTitle: React.FC<{ label: string; hint?: string }> = ({
 
 // ---------- HERO ----------
 const Hero: React.FC = () => {
+  const { t } = useLanguage();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -365,12 +488,6 @@ const Hero: React.FC = () => {
   });
   const y = useTransform(scrollYProgress, [0, 1], [0, -30]);
   const [first, ...rest] = CONFIG.name.split(" ");
-  const heroStats = [
-    "Software Engineer",
-    "Full-Stack Dev",
-    "Mobile Dev",
-    "Game Dev",
-  ];
 
   return (
     <section
@@ -389,7 +506,7 @@ const Hero: React.FC = () => {
             transition={{ delay: HERO_ANIMATION.role, duration: 0.6 }}
             className="text-sm uppercase tracking-[0.6em] text-white/70 drop-shadow-[0_4px_16px_rgba(0,0,0,0.55)]"
           >
-            {CONFIG.role}
+            {t.role}
           </motion.p>
           <motion.h1
             className="text-[clamp(3.5rem,10vw,9rem)] text-center font-bold leading-[0.9] text-white md:text-left"
@@ -412,7 +529,7 @@ const Hero: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: HERO_ANIMATION.stats, duration: 0.5 }}
           >
-            {heroStats.map((item) => (
+            {t.heroStats.map((item) => (
               <div key={item} className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-[#58FF8A]" />
                 {item}
@@ -451,10 +568,10 @@ const Hero: React.FC = () => {
             className="rounded-3xl border border-white/10 bg-white/5 px-6 py-5 text-sm text-[#c7c7c7]"
           >
             <p className="text-xs uppercase tracking-[0.4em] text-white/60">
-              About
+              {t.about}
             </p>
             <p className="mt-3 text-[0.95rem] leading-relaxed text-white/85">
-              {CONFIG.blurb}
+              {t.blurb}
             </p>
             <div className="mt-5 flex items-center gap-3 text-white/90">
               <MapPin className="h-4 w-4 text-[#58FF8A]" />
@@ -495,14 +612,14 @@ const Hero: React.FC = () => {
               className="inline-flex items-center justify-center gap-3 rounded-full border border-[#58FF8A]/60 bg-[#0c0c0c] px-5 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white transition hover:border-[#58FF8A] hover:bg-[#111]"
             >
               <ArrowRight className="h-4 w-4 rotate-90 text-[#58FF8A]" />
-              Download Resume
+              {t.downloadResume}
             </motion.a>
           ) : null}
         </div>
       </motion.div>
       <motion.button
         type="button"
-        aria-label="Jump to technologies"
+        aria-label={t.scrollHint}
         className="absolute left-1/2 top-[calc(100%-120px)] hidden -translate-x-1/2 rounded-full border border-transparent p-2 transition hover:border-white/40 md:block"
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -520,12 +637,14 @@ const Hero: React.FC = () => {
 };
 
 // ---------- TECHNOLOGIES ----------
-const Technologies: React.FC = () => (
+const Technologies: React.FC = () => {
+  const { t } = useLanguage();
+  return (
   <section
     id="tech"
     className="relative scroll-mt-20 border-b border-white/5 bg-transparent py-20"
   >
-    <SectionTitle label="Technologies" hint="All the Stuff I know" />
+    <SectionTitle label={t.navTech} hint={t.techHint} />
     <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-6 md:grid-cols-2 lg:grid-cols-3">
       {CONFIG.technologies.map((cat, idx) => (
         <motion.div
@@ -553,20 +672,25 @@ const Technologies: React.FC = () => (
       ))}
     </div>
   </section>
-);
+  );
+};
 
 // ---------- EXPERIENCE ----------
-const Experience: React.FC = () => (
+const Experience: React.FC = () => {
+  const { t } = useLanguage();
+  return (
   <section
     id="experience"
     className="relative border-b border-white/5 bg-transparent py-24"
   >
     <SectionTitle
-      label="Experience"
-      hint="All the places I have made an impact at"
+      label={t.navExperience}
+      hint={t.experienceHint}
     />
     <div className="mx-auto flex max-w-6xl flex-col gap-5 px-6">
-      {CONFIG.experience.map((job, idx) => (
+      {CONFIG.experience.map((job, idx) => {
+        const entry = t.experience[idx];
+        return (
         <motion.div
           key={`${job.company}-${job.period}`}
           initial={{ opacity: 0, y: 12 }}
@@ -580,17 +704,17 @@ const Experience: React.FC = () => (
               <p className="text-xs uppercase tracking-[0.4em] text-white/60">
                 {job.period}
               </p>
-              <h3 className="text-2xl font-bold text-white">{job.role}</h3>
+              <h3 className="text-2xl font-bold text-white">{entry?.role ?? job.role}</h3>
               <p className="text-white/70">
                 {job.company}
                 {job.location ? ` · ${job.location}` : ""}
               </p>
             </div>
           </div>
-          <p className="mt-4 text-white/80">{job.summary}</p>
-          {job.highlights ? (
+          <p className="mt-4 text-white/80">{entry?.summary ?? job.summary}</p>
+          {(entry?.highlights ?? job.highlights) ? (
             <div className="mt-5 grid gap-3 text-sm text-white/70 md:grid-cols-2">
-              {job.highlights.map((point) => (
+              {(entry?.highlights ?? job.highlights ?? []).map((point) => (
                 <div key={point} className="flex items-start gap-2">
                   <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-[#58FF8A]" />
                   <span>{point}</span>
@@ -599,10 +723,12 @@ const Experience: React.FC = () => (
             </div>
           ) : null}
         </motion.div>
-      ))}
+        );
+      })}
     </div>
   </section>
-);
+  );
+};
 
 // ---------- EDUCATION: Globe + Destinations ----------
 
@@ -655,6 +781,7 @@ const ZoomControls: React.FC<{
 };
 
 const DestinationsPanel: React.FC = () => {
+  const { t } = useLanguage();
   const destinations = CONFIG.education.tickerDetail;
   const pastDestinations =
     destinations.length > 1
@@ -664,7 +791,7 @@ const DestinationsPanel: React.FC = () => {
     destinations.length > 0 ? destinations[destinations.length - 1] : null;
   const futureDestination = {
     left: "???",
-    mid: "Exploring the Jobmarket",
+    mid: t.exploringJobmarket,
     right: "???",
   };
 
@@ -698,7 +825,7 @@ const DestinationsPanel: React.FC = () => {
     >
       <div>
         <p className="text-xs uppercase tracking-[0.4em] text-white/50">
-          Past Destinations
+          {t.pastDestinations}
         </p>
         <div className="mt-3 space-y-3">
           {pastDestinations.map((row, idx) =>
@@ -709,7 +836,7 @@ const DestinationsPanel: React.FC = () => {
       {currentDestination ? (
         <div>
           <p className="text-xs uppercase tracking-[0.4em] text-[#58FF8A]">
-            Current Destination
+            {t.currentDestination}
           </p>
           <div className="mt-3">
             {renderRow(
@@ -723,7 +850,7 @@ const DestinationsPanel: React.FC = () => {
       ) : null}
       <div>
         <p className="text-xs uppercase tracking-[0.4em] text-white/40">
-          Future Destination
+          {t.futureDestination}
         </p>
         <div className="mt-3">
           {renderRow(
@@ -739,6 +866,7 @@ const DestinationsPanel: React.FC = () => {
 };
 
 const Education: React.FC = () => {
+  const { t } = useLanguage();
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
   const canvasContainerRef = useRef<HTMLDivElement | null>(null);
   const globeInView = useInView(canvasContainerRef, {
@@ -752,8 +880,8 @@ const Education: React.FC = () => {
       className="relative border-b border-white/5 bg-transparent py-24"
     >
       <SectionTitle
-        label="Education"
-        hint="Knowledge from all around the globe"
+        label={t.navEducation}
+        hint={t.educationHint}
       />
 
       <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 px-6 md:grid-cols-2">
@@ -807,8 +935,11 @@ const Education: React.FC = () => {
 // ---------- PROJECTS ----------
 const ProjectCard: React.FC<{
   project: (typeof CONFIG.projects)[number];
+  idx: number;
   invert?: boolean;
-}> = ({ project, invert }) => {
+}> = ({ project, idx, invert }) => {
+  const { t } = useLanguage();
+  const projT = t.projects[idx];
   const isPhonePreview = project.previewType === "phone";
   const mediaImage =
     project.image ??
@@ -892,15 +1023,15 @@ const ProjectCard: React.FC<{
           </div>
         )}
         <div className="w-full space-y-4 md:w-1/2">
-          <h3 className="text-2xl font-bold text-white">{project.title}</h3>
-          <p className="max-w-prose text-white/70">{project.description}</p>
+          <h3 className="text-2xl font-bold text-white">{projT?.title ?? project.title}</h3>
+          <p className="max-w-prose text-white/70">{projT?.description ?? project.description}</p>
           <div className="flex flex-wrap gap-2">
-            {project.tags.map((t) => (
+            {project.tags.map((tag) => (
               <span
-                key={t}
+                key={tag}
                 className="rounded-full border border-white/15 px-3 py-1 text-xs text-white/70"
               >
-                {t}
+                {tag}
               </span>
             ))}
           </div>
@@ -910,7 +1041,7 @@ const ProjectCard: React.FC<{
               target="_blank"
               className="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm text-white/80 hover:border-white/60"
             >
-              Visit <ExternalLink className="h-4 w-4" />
+              {t.visit} <ExternalLink className="h-4 w-4" />
             </a>
           )}
         </div>
@@ -919,57 +1050,61 @@ const ProjectCard: React.FC<{
   );
 };
 
-const Projects: React.FC = () => (
-  <section
-    id="projects"
-    className="relative border-b border-white/5 bg-transparent py-24"
-  >
-    <SectionTitle label="Projects" hint="See what I made. First Hand." />
-    <div className="space-y-2">
-      {CONFIG.projects.map((p, i) => (
-        <ProjectCard key={p.title} project={p} invert={i % 2 === 1} />
-      ))}
-    </div>
-  </section>
-);
+const Projects: React.FC = () => {
+  const { t } = useLanguage();
+  return (
+    <section
+      id="projects"
+      className="relative border-b border-white/5 bg-transparent py-24"
+    >
+      <SectionTitle label={t.navProjects} hint={t.projectsHint} />
+      <div className="space-y-2">
+        {CONFIG.projects.map((p, i) => (
+          <ProjectCard key={p.title} project={p} idx={i} invert={i % 2 === 1} />
+        ))}
+      </div>
+    </section>
+  );
+};
 
 // ---------- CONTACT ----------
-const ContactSection: React.FC = () => (
+const ContactSection: React.FC = () => {
+  const { t } = useLanguage();
+  return (
   <section
     id="contact"
     className="relative border-t border-white/5 bg-transparent py-24"
   >
-    <SectionTitle label="Contact" hint="lets make a connection!" />
+    <SectionTitle label={t.navContact} hint={t.contactHint} />
     <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6">
       <div className="grid gap-6 md:grid-cols-2">
         <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-6">
           <p className="text-xs uppercase tracking-[0.4em] text-white/60">
-            Direct Line
+            {t.directLine}
           </p>
           <h3 className="mt-3 text-3xl font-bold text-white">
-            Like what you see?
+            {t.likeWhatYouSee}
           </h3>
           <p className="mt-3 text-white/70">
-            Shoot me an email and we’ll kick off in hours, not weeks.
+            {t.emailCTA}
           </p>
           <a
             href="mailto:contact@gerritvisser.de"
             className="mt-6 inline-flex items-center gap-3 rounded-full border border-white px-5 py-3 text-sm uppercase tracking-[0.3em] text-white transition hover:bg-white hover:text-black"
           >
-            <Mail className="h-4 w-4" /> Send Email
+            <Mail className="h-4 w-4" /> {t.sendEmail}
           </a>
         </div>
         <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-6">
           <p className="text-xs uppercase tracking-[0.4em] text-white/60">
-            Also find me here
+            {t.alsoFindMe}
           </p>
           <div className="mt-3 flex items-center gap-3 text-white">
             <MapPin className="h-5 w-5 text-[#58FF8A]" />
             {CONFIG.location.city}, {CONFIG.location.country}
           </div>
           <p className="mt-3 text-white/70">
-            Dont need to directly reach me but still wanna tag along? Here are
-            the places to do that
+            {t.tagAlongText}
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             {CONFIG.socials
@@ -1008,21 +1143,31 @@ const ContactSection: React.FC = () => (
           <p className="text-2xl font-semibold text-white">{CONFIG.name}</p>
         </div>
         <p className="text-white/50">
-          Open to Job offers, advisory, and playful side collaborations.
+          {t.openTo}
         </p>
       </div>
     </div>
   </section>
-);
+  );
+};
 
 // ---------- SIDEBAR NAV ----------
 const SectionSidebar: React.FC = () => {
-  const [activeSection, setActiveSection] = useState(SECTION_LINKS[0].id);
+  const { t } = useLanguage();
+  const sectionLinks = [
+    { id: "intro", label: t.navProfile },
+    { id: "tech", label: t.navTech },
+    { id: "experience", label: t.navExperience },
+    { id: "education", label: t.navEducation },
+    { id: "projects", label: t.navProjects },
+    { id: "contact", label: t.navContact },
+  ];
+  const [activeSection, setActiveSection] = useState(sectionLinks[0].id);
   const [sectionProgress, setSectionProgress] = useState<
     Record<string, number>
   >(
     () =>
-      Object.fromEntries(SECTION_LINKS.map(({ id }) => [id, 0])) as Record<
+      Object.fromEntries(sectionLinks.map(({ id }) => [id, 0])) as Record<
         string,
         number
       >,
@@ -1043,26 +1188,27 @@ const SectionSidebar: React.FC = () => {
         threshold: 0.1,
       },
     );
-    SECTION_LINKS.forEach(({ id }) => {
+    sectionLinks.forEach(({ id }) => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
     return () => observer.disconnect();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const elements = SECTION_LINKS.map(({ id }) => document.getElementById(id));
+    const elements = sectionLinks.map(({ id }) => document.getElementById(id));
     let ticking = false;
 
     const updateProgress = () => {
       const scrollProbe = window.scrollY + window.innerHeight * 0.3;
       const nextProgress: Record<string, number> = {};
-      let currentSectionId = SECTION_LINKS[0].id;
+      let currentSectionId = sectionLinks[0].id;
 
       elements.forEach((el, idx) => {
         const nextEl = elements[idx + 1];
-        const sectionId = SECTION_LINKS[idx].id;
+        const sectionId = sectionLinks[idx].id;
         if (!el) {
           nextProgress[sectionId] = 0;
           return;
@@ -1103,13 +1249,13 @@ const SectionSidebar: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const activeIndex = SECTION_LINKS.findIndex(
+  const activeIndex = sectionLinks.findIndex(
     (section) => section.id === activeSection,
   );
 
   return (
     <div className="pointer-events-none fixed right-12 top-1/2 z-40 hidden h-[80vh] -translate-y-1/2 flex-col items-center justify-start text-xs uppercase tracking-[0.3em] text-white/40 md:flex">
-      {SECTION_LINKS.map((section, idx) => {
+      {sectionLinks.map((section, idx) => {
         const isActive = section.id === activeSection;
         const connectorActive = activeIndex > idx;
         const progress = sectionProgress[section.id] ?? 0;
@@ -1137,7 +1283,7 @@ const SectionSidebar: React.FC = () => {
             >
               {section.label}
             </motion.button>
-            {idx < SECTION_LINKS.length - 1 ? (
+            {idx < sectionLinks.length - 1 ? (
               <motion.div
                 className="flex w-full flex-grow flex-col items-center justify-center gap-1 py-1"
                 style={{
@@ -1185,17 +1331,37 @@ const ScrollHand: React.FC<{ className?: string }> = ({ className }) => (
 
 // ---------- PAGE ----------
 export default function Portfolio() {
+  const { hasChosen, setLang } = useLanguage();
+  // In dev mode: local dismiss resets on every page reload so picker always shows
+  const [devDismissed, setDevDismissed] = React.useState(false);
+
+  const showPicker = DEV_ALWAYS_SHOW_PICKER ? !devDismissed : !hasChosen;
+  const showSite   = DEV_ALWAYS_SHOW_PICKER ? devDismissed  : hasChosen;
+
+  const handleChoose = (l: Lang) => {
+    setLang(l);
+    if (DEV_ALWAYS_SHOW_PICKER) setDevDismissed(true);
+  };
+
   return (
-    <div
-      className={`mesh-bg min-h-screen scroll-smooth bg-[#050505] text-white lg:pr-28`}
-    >
-      <SectionSidebar />
-      <Hero />
-      <Technologies />
-      <Experience />
-      <Education />
-      <Projects />
-      <ContactSection />
-    </div>
+    <>
+      <AnimatePresence>
+        {showPicker && (
+          <LanguagePicker key="lang-picker" onChoose={handleChoose} />
+        )}
+      </AnimatePresence>
+      {showSite && (
+        <div className="mesh-bg min-h-screen scroll-smooth bg-[#050505] text-white lg:pr-28">
+          <LanguageSwitcher />
+          <SectionSidebar />
+          <Hero />
+          <Technologies />
+          <Experience />
+          <Education />
+          <Projects />
+          <ContactSection />
+        </div>
+      )}
+    </>
   );
 }
