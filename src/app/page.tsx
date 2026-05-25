@@ -1273,29 +1273,6 @@ const SectionSidebar: React.FC = () => {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      {
-        rootMargin: "-40% 0px -40% 0px",
-        threshold: 0.1,
-      },
-    );
-    sectionLinks.forEach(({ id }) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-    return () => observer.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
     const elements = sectionLinks.map(({ id }) => document.getElementById(id));
     let ticking = false;
 
