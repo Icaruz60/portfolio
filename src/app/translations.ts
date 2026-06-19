@@ -96,6 +96,11 @@ export const T = {
     // Projects — indexed to match CONFIG.projects order
     projects: [
       {
+        title: "Courtside Oracle — NBA Game Prediction Engine",
+        description:
+          "Built an end-to-end NBA prediction system from scratch: custom player ELO ratings across 7 skill dimensions, an XGBoost classifier trained on 14,108 games across 11 seasons, and a fully automated daily pipeline that fetches schedules, generates predictions, and self-evaluates once results are final. Achieved 67.5% accuracy on a held-out test set of 2,116 games. Each prediction comes with SHAP explainability so you can see exactly which factors drove the call.",
+      },
+      {
         title: "Ascend — Social Media for Productivity",
         description:
           "Ascend is a phone app fighting the doomscrolling epidemic. Instead of mindless scrolling, it rewards productivity and strengthens real friendships. You can share meaningful progress, level up together, and actually do something with your time.",
@@ -125,6 +130,11 @@ export const T = {
         title: "MenuMate — Interactive Restaurant Menus",
         description:
           "A web app that modernizes the dining experience. Smart filters and an improved rating system replace walls of text, so you actually find what you want to eat.",
+      },
+      {
+        title: "Courtside Oracle — NBA Game Prediction Engine",
+        description:
+          "Built an end-to-end NBA prediction system from scratch: custom player ELO ratings across 7 skill categories, an XGBoost classifier trained on 14,108 games across 11 seasons, and a fully automated daily pipeline that fetches schedules, generates predictions, and self-evaluates once results are final. Achieved 67.5% accuracy on a held-out test set of 2,116 games. Each prediction comes with SHAP explainability so you can see exactly which factors drove the call.",
       },
     ],
   },
@@ -224,6 +234,11 @@ export const T = {
 
     // Projects
     projects: [
+      {
+        title: "Courtside Oracle — NBA Spielvorhersage-Engine",
+        description:
+          "Ein vollständiges NBA-Vorhersagesystem von Grund auf entwickelt: Eigene Spieler-ELO-Bewertungen in 7 Skill-kategorien, ein XGBoost-Klassifikator trainiert auf 14.108 Spielen über 11 Saisons und eine vollautomatisierte tägliche Pipeline, die Spielpläne abruft, Vorhersagen erstellt und sich selbst auswertet sobald Ergebnisse feststehen. 67,5% Genauigkeit auf einem separaten Testset von 2.116 Spielen. Jede Vorhersage enthält SHAP-Erklärbarkeit — du siehst genau welche Faktoren die Entscheidung beeinflusst haben.",
+      },
       {
         title: "Ascend — Social Media für Produktivität",
         description:

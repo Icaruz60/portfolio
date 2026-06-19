@@ -226,6 +226,17 @@ const CONFIG = {
   },
   projects: [
     {
+      title: "Courtside Oracle — NBA Game Prediction Engine",
+      description:
+        "Built an end-to-end NBA prediction system from scratch: custom player ELO ratings across 7 skill dimensions, an XGBoost classifier trained on 14,108 games across 11 seasons, and a fully automated daily pipeline that fetches schedules, generates predictions, and self-evaluates once results are final. Achieved 67.5% accuracy on a held-out test set of 2,116 games. Each prediction comes with SHAP explainability so you can see exactly which factors drove the call.",
+      tags: ["Python", "XGBoost", "Supabase", "Next.js", "GitHub Actions", "SHAP"],
+      image: undefined,
+      previewVideo: undefined,
+      previewType: "iframe",
+      iframeSrc: "https://courtside-oracle.gerritvisser.de/card",
+      href: "https://courtside-oracle.gerritvisser.de",
+    },
+    {
       title: "Ascend — Social Media for Productivity",
       description:
         "Ascend is a phone app fighting the doomscrolling epidemic. Instead of mindless scrolling, it rewards productivity and strengthens real friendships. You can share meaningful progress, level up together, and actually do something with your time.",
@@ -1028,6 +1039,7 @@ const ProjectCard: React.FC<{
   const { t } = useLanguage();
   const projT = t.projects[idx];
   const isPhonePreview = project.previewType === "phone";
+  const isIframePreview = project.previewType === "iframe";
   const mediaImage =
     project.image ??
     "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80";
@@ -1084,6 +1096,23 @@ const ProjectCard: React.FC<{
     </div>
   );
 
+  const renderIframePreview = () => (
+    <div className="relative w-full">
+      <div className="pointer-events-none absolute -inset-4 rounded-[40px] bg-[#58FF8A]/30 opacity-0 blur-3xl transition duration-200 group-hover:opacity-70" />
+      <div className="relative w-full overflow-hidden rounded-[32px] border border-white/10 bg-[#0b0b0b]" style={{ aspectRatio: "420 / 260" }}>
+        {"iframeSrc" in project && project.iframeSrc ? (
+          <iframe
+            src={project.iframeSrc}
+            title={projT?.title ?? project.title}
+            className="h-full w-full"
+            style={{ border: "none" }}
+            loading="lazy"
+          />
+        ) : null}
+      </div>
+    </div>
+  );
+
   return (
     <motion.div
       ref={cardRef}
@@ -1108,7 +1137,11 @@ const ProjectCard: React.FC<{
               isPhonePreview ? "flex justify-center" : ""
             }`}
           >
-            {isPhonePreview ? renderPhonePreview() : renderWebPreview()}
+            {isPhonePreview
+              ? renderPhonePreview()
+              : isIframePreview
+                ? renderIframePreview()
+                : renderWebPreview()}
           </a>
         ) : (
           <div
@@ -1116,7 +1149,11 @@ const ProjectCard: React.FC<{
               isPhonePreview ? "flex justify-center" : ""
             }`}
           >
-            {isPhonePreview ? renderPhonePreview() : renderWebPreview()}
+            {isPhonePreview
+              ? renderPhonePreview()
+              : isIframePreview
+                ? renderIframePreview()
+                : renderWebPreview()}
           </div>
         )}
         <div className="w-full space-y-4 md:w-1/2">
